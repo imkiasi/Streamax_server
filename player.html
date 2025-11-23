@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Streamax Live Stream</title>
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+</head>
+<body>
+  <h2>Live Stream Test</h2>
+  <video id="video" controls autoplay width="640" height="360"></video>
+
+  <script>
+    const video = document.getElementById('video');
+    const streamURL = 'http://91.238.164.100:8080/stream/index.m3u8';
+
+    if (Hls.isSupported()) {
+      const hls = new Hls();
+      hls.loadSource(streamURL);
+      hls.attachMedia(video);
+      hls.on(Hls.Events.MANIFEST_PARSED, function() {
+        video.play();
+      });
+    } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+      // For Safari
+      video.src = streamURL;
+      video.addEventListener('loadedmetadata', () => video.play());
+    }
+  </script>
+</body>
+</html>
